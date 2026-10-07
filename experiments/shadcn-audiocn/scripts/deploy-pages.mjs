@@ -39,6 +39,16 @@ const tree = await api(`${repo}/git/trees`, 'POST', { tree: files })
 const commit = await api(`${repo}/git/commits`, 'POST', { message: 'Deploy shadcn ringlight PWA', tree: tree.sha, parents: [previous.object.sha] })
 await api(`${repo}/git/refs/heads/gh-pages`, 'PATCH', { sha: commit.sha, force: false })
 await api(`${repo}/pages`, 'PUT', { build_type: 'legacy', source: { branch: 'gh-pages', path: '/' }, cname: domain })
+// Keep production HTTPS enforced whenever GitHub has issued the certificate.
+const pages = await api(`${repo}/pages`)
+if (!pages.https_enforced) {
+  try {
+    await api(`${repo}/pages`, 'PUT', { https_enforced: true })
+  } catch (error) {
+    if (!error.message.includes('certificate does not exist yet')) throw error
+    console.log('Certificado HTTPS pendente no GitHub; ative Enforce HTTPS após a emissão.')
+  }
+}
 console.log(`Build enviado: https://github.com/fcrespo82/ringlight/commit/${commit.sha}`)
 console.log(`Acompanhe a publicação: https://github.com/fcrespo82/ringlight/actions`)
 console.log(`Site: https://${domain}`)
