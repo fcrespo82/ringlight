@@ -42,6 +42,8 @@ O painel tem dois blocos independentes, **Configurações** e **Predefinições*
 
 ## Publicação no GitHub Pages
 
-O workflow `/.github/workflows/pages.yml` instala dependências, executa os testes e publica somente o build desta versão. Ele roda em pushes para `main` ou manualmente pelo GitHub Actions. No repositório, selecione **Settings → Pages → Source: GitHub Actions** e configure o domínio **ringlight.crespo.com.br**.
+Repositório: https://github.com/fcrespo82/ringlight. Somente esta versão é publicada; a aplicação original permanece disponível como código-fonte. O Pages publica o build na branch `gh-pages`, na raiz. O código-fonte fica em `main`.
 
-Na Cloudflare, use um registro **CNAME**, nome **ringlight**, destino **fcrespo82.github.io**, com proxy desativado (DNS only). Ative **Enforce HTTPS** no Pages após a emissão do certificado. O domínio personalizado também precisa ser configurado no Pages; o arquivo CNAME sozinho não faz isso em uma publicação por Actions.
+Para atualizar, autentique a CLI do GitHub com `gh auth login`, execute `npm test` e `npm run deploy` nesta pasta. O comando gera o build, envia os arquivos para `gh-pages` e mantém o domínio configurado. Ele requer Node 24 e a CLI `gh`; não grava credenciais no projeto. As alterações do código-fonte devem ser commitadas e enviadas para `main` separadamente.
+
+Na Cloudflare, use um registro **CNAME**, nome **ringlight**, destino **fcrespo82.github.io**, com proxy desativado (DNS only). Ative **Enforce HTTPS** no Pages após a emissão do certificado. O domínio personalizado precisa estar configurado no Pages; o arquivo CNAME sozinho não faz isso.
