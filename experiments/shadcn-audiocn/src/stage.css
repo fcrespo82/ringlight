@@ -1,0 +1,42 @@
+/* Only the light/video canvas and window positioning need app-specific CSS. */
+.light-stage{position:fixed;inset:0;display:grid;place-items:center;background:#000;overflow:hidden}
+.light-stage::before{content:"";position:absolute;width:min(100vw,100dvh);height:min(100vw,100dvh);background:var(--light);mask:var(--ring-mask) 0 0/100% 100%;-webkit-mask:var(--ring-mask) 0 0/100% 100%}
+.light-stage.full{background:var(--light)}.light-stage.full::before{display:none}
+.light-stage.sides::before{width:100%;height:100%;mask-image:linear-gradient(to right,#000 var(--side-width),transparent var(--side-width),transparent var(--side-start),#000 var(--side-start));-webkit-mask-image:linear-gradient(to right,#000 var(--side-width),transparent var(--side-width),transparent var(--side-start),#000 var(--side-start))}
+.camera-frame{position:relative;display:grid;place-items:center;width:var(--center-size);height:var(--center-size);background:#000;mask:var(--center-mask) 0 0/100% 100%;-webkit-mask:var(--center-mask) 0 0/100% 100%;overflow:hidden}
+.camera-frame video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}.light-stage.full .camera-frame{display:none}.light-stage.sides .camera-frame{width:var(--side-center);height:min(80dvh,var(--side-center));mask:none;-webkit-mask:none}
+.light-stage.mini{position:absolute;inset:0}.mini::before{width:100%;height:100%}.mini .camera-frame{width:var(--inner-percent);height:var(--inner-percent);background:#252b35}.mini.sides .camera-frame{width:var(--side-percent);height:70%}.mini-camera{width:20px;height:20px;color:#bbff80}
+.lab-window{position:fixed;z-index:10;top:20px;right:20px;width:380px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:hidden;box-shadow:0 16px 64px #0009;transition:width 240ms cubic-bezier(.4,0,.2,1)}.lab-window.collapsed{width:190px}
+
+@media(prefers-reduced-motion:reduce){.lab-window{transition:none}.lab-window .panel-content{animation:none!important}}
+@media(max-width:600px){.lab-window{top:12px;right:12px}}
+
+.group-content{display:block;overflow:hidden}
+.lab-window .panel-content{display:grid;grid-template-rows:1fr;transition:grid-template-rows 240ms ease,visibility 240ms}
+.lab-window .panel-content[data-state]{animation:none}
+.lab-window .panel-content>[data-slot=card-content]{min-height:0}
+.lab-window .panel-content[data-state=closed]{grid-template-rows:0fr;visibility:hidden}
+.lab-window .panel-content[data-state=closed]>[data-slot=card-content]{padding-top:0;padding-bottom:0;overflow:hidden}
+@media(prefers-reduced-motion:reduce){.group-content,.lab-window .panel-content{transition:none}}
+
+/* Every shadcn Collapsible animates by default; mounted groups use grid transitions. */
+.animated-collapsible[data-state=open]{animation:collapse-open 200ms ease-out}
+.animated-collapsible[data-state=closed]{animation:collapse-close 200ms ease-in}
+.animated-collapsible.group-content[data-state],.lab-window .animated-collapsible.panel-content[data-state]{animation:none}
+@keyframes collapse-open{from{height:0}to{height:var(--radix-collapsible-content-height)}}
+@keyframes collapse-close{from{height:var(--radix-collapsible-content-height)}to{height:0}}
+@media(prefers-reduced-motion:reduce){.animated-collapsible[data-state]{animation:none!important}}
+
+/* State changes share a short, consistent motion rhythm. */
+.lab-window :is(button,input,[data-slot=switch],[data-slot=badge]){transition:background-color 160ms ease,color 160ms ease,border-color 160ms ease,box-shadow 160ms ease,transform 160ms ease}
+.lab-window button:active:not(:disabled){transform:scale(.97)}
+.lab-window [data-slot=switch-thumb]{transition:transform 180ms ease,background-color 160ms ease}
+.state-enter{animation:state-enter 180ms ease-out}
+@keyframes state-enter{from{transform:translateY(4px)}to{transform:translateY(0)}}
+.camera-frame{transition:width 180ms ease,height 180ms ease}
+@media(prefers-reduced-motion:reduce){.lab-window :is(button,input,[data-slot=switch],[data-slot=switch-thumb],[data-slot=badge]),.camera-frame{transition:none}.state-enter{animation:none}}
+
+.light-stage.ring::before{width:var(--shape-width);height:var(--shape-height)}
+.light-stage.ring .camera-frame{width:var(--camera-width);height:var(--camera-height);transition:none}
+.light-stage.mini.ring::before{width:100%;height:var(--mini-shape-height);top:50%;left:0;transform:translateY(-50%)}
+.light-stage.mini.ring .camera-frame{width:var(--mini-camera-width);height:var(--mini-camera-height)}

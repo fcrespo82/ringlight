@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@custom-variant dark (&:is(.dark *));
+@theme inline {
+  --color-background: var(--background); --color-foreground: var(--foreground);
+  --color-card: var(--card); --color-card-foreground: var(--foreground);
+  --color-popover: var(--card); --color-popover-foreground: var(--foreground);
+  --color-primary: var(--primary); --color-primary-foreground: #172010;
+  --color-secondary: #262a30; --color-secondary-foreground: var(--foreground);
+  --color-muted: #262a30; --color-muted-foreground: #aab0bc;
+  --color-accent: #30353d; --color-accent-foreground: var(--foreground);
+  --color-destructive: #ff7878; --color-border: #ffffff20; --color-input: #ffffff20; --color-ring: var(--primary);
+  --radius-sm: .375rem; --radius-md: .5rem; --radius-lg: .75rem; --radius-xl: 1rem; --color-meter-ok: var(--meter-ok); --color-meter-warn: var(--meter-warn); --color-meter-clip: var(--meter-clip); --color-channel-mute: var(--channel-mute); --color-channel-solo: var(--channel-solo); --color-channel-monitor: var(--channel-monitor); --color-meter-ok-foreground: var(--meter-ok-foreground); --color-meter-warn-foreground: var(--meter-warn-foreground); --color-meter-clip-foreground: var(--meter-clip-foreground); --color-channel-mute-foreground: var(--channel-mute-foreground); --color-channel-solo-foreground: var(--channel-solo-foreground); --color-channel-monitor-foreground: var(--channel-monitor-foreground); --channel-monitor-foreground: var(--channel-monitor-foreground); --channel-solo-foreground: var(--channel-solo-foreground); --channel-mute-foreground: var(--channel-mute-foreground); --meter-clip-foreground: var(--meter-clip-foreground); --meter-warn-foreground: var(--meter-warn-foreground); --meter-ok-foreground: var(--meter-ok-foreground); --channel-mute: var(--channel-mute); --meter-clip: var(--meter-clip);
+}
+:root { --background:#000; --foreground:#f5f5f5; --card:#17191d; --primary:#bbff80; color-scheme:dark; font-family:system-ui,sans-serif; --meter-ok: oklch(0.696 0.17 162.48); --meter-warn: oklch(0.795 0.184 86.047); --meter-clip: var(--destructive); --channel-mute: var(--destructive); --channel-solo: oklch(0.795 0.184 86.047); --channel-monitor: oklch(0.623 0.214 259.815); --meter-ok-foreground: color-mix(in oklch, var(--meter-ok), black 40%); --meter-warn-foreground: color-mix(in oklch, var(--meter-warn), black 40%); --meter-clip-foreground: color-mix(in oklch, var(--meter-clip), black 40%); --channel-mute-foreground: color-mix(in oklch, var(--channel-mute), black 40%); --channel-solo-foreground: color-mix(in oklch, var(--channel-solo), black 40%); --channel-monitor-foreground: color-mix(in oklch, var(--channel-monitor), black 40%); }
+@layer base { * { @apply border-border; } body { @apply bg-background text-foreground; margin:0; } }
+
+.dark {
+  --meter-ok: oklch(0.765 0.177 163.223);
+  --meter-warn: oklch(0.852 0.199 91.936);
+  --meter-clip: var(--destructive);
+  --channel-mute: var(--destructive);
+  --channel-solo: oklch(0.852 0.199 91.936);
+  --channel-monitor: oklch(0.707 0.165 254.624);
+  --meter-ok-foreground: var(--meter-ok);
+  --meter-warn-foreground: var(--meter-warn);
+  --meter-clip-foreground: var(--meter-clip);
+  --channel-mute-foreground: var(--channel-mute);
+  --channel-solo-foreground: var(--channel-solo);
+  --channel-monitor-foreground: var(--channel-monitor);
+}

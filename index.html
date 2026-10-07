@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#141414">
+  <meta name="description" content="Transforme sua tela em uma ringlight com cores e intensidade ajustáveis.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Ringlight</title>
+</head>
+<body>
+  <main id="light" class="light" aria-label="Área de iluminação">
+    <div id="camera-frame" class="center"><video id="camera" autoplay muted playsinline aria-label="Prévia da câmera"></video></div>
+  </main>
+  <section id="panel" class="panel" aria-label="Controles da iluminação">
+    <header id="panel-drag-region" class="panel-header">
+      <h1><button id="panel-handle" class="window-title" aria-label="Mover painel: arraste ou use as setas" title="Arraste ou use as setas para mover"><span class="grip" aria-hidden="true">⠿</span> Ringlight</button></h1>
+      <div class="window-actions"><button id="show-panel" class="icon-button" aria-controls="panel-body" aria-expanded="true" aria-label="Expandir painel" title="Expandir painel (P)" hidden>▾</button><button id="fullscreen" aria-keyshortcuts="f" title="Tela cheia (F)" class="icon-button">Tela cheia ↗</button><button id="hide-panel" aria-keyshortcuts="p" title="Ocultar painel (P)" class="icon-button" aria-label="Ocultar controles">✕</button></div>
+    </header>
+    <div id="panel-body" class="panel-body">
+      <details class="panel-section" open>
+        <summary>Configurações<button id="random-config" class="random-config" type="button" aria-label="Sortear configurações" title="Sortear configurações">⚄</button><span class="section-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="section-content">
+      <fieldset class="control-group"><legend>Iluminação</legend>
+        <div class="modes" role="group" aria-label="Modo de iluminação"><button id="ring-mode" aria-pressed="true">◉ Anel</button><button id="full-mode" aria-pressed="false">▣ Luz inteira</button><button id="sides-mode" aria-pressed="false">▥ Laterais</button></div>
+        <div id="shape-controls" class="shape-controls"><label id="shape-title" for="shape">Forma</label><select id="shape"><option value="circle">Círculo</option><option value="heart">Coração</option><option value="star">Estrela</option><option value="flower">Flor</option><option value="hexagon">Hexágono</option><option value="diamond">Losango</option><option value="octagon">Octógono</option><option value="square">Quadrado arredondado</option><option value="triangle">Triângulo</option><hr><option value="custom">SVG personalizado</option></select><label id="svg-upload" class="upload" hidden>Importar SVG<input id="svg-file" type="file" accept=".svg,image/svg+xml"></label></div>
+        <div id="width-controls" class="width-controls"><div class="intensity-row"><label id="light-width-title" for="light-width">Espessura do anel</label><output id="light-width-label" for="light-width">29%</output></div><input id="light-width" type="range" min="5" max="70" value="29"></div>
+        <div class="intensity-row"><label id="intensity-title" for="intensity">Intensidade</label><output id="intensity-label" for="intensity">100%</output></div><input id="intensity" type="range" min="0" max="100" value="100">
+      </fieldset>
+      <fieldset class="control-group"><legend>Cores</legend>
+        <div class="modes" role="group" aria-label="Tipo de cor"><button id="solid-color" aria-pressed="true">Cor única</button><button id="gradient-color" aria-pressed="false">Gradiente</button></div>
+        <div class="color-row"><label id="color-title" for="color">Cor da luz</label><div class="color-value"><span id="color-label">#FFFFFF</span><input id="color" type="color" value="#ffffff"></div></div>
+        <div id="color-swatches" class="swatches" role="group" aria-label="Cores recentes e sugeridas para a primeira cor"></div>
+        <div id="gradient-controls" hidden>
+          <div class="color-row"><label id="color-end-title" for="color-end">Segunda cor</label><div class="color-value"><span id="color-end-label">#00CFFF</span><input id="color-end" type="color" value="#00cfff"></div></div>
+          <div id="color-end-swatches" class="swatches" role="group" aria-label="Cores recentes e sugeridas para a segunda cor"></div>
+          <div class="intensity-row gradient-direction"><label id="gradient-angle-title" for="gradient-angle">Direção</label><output id="gradient-angle-label" for="gradient-angle">90°</output></div><input id="gradient-angle" type="range" min="0" max="360" value="90">
+        </div>
+      </fieldset>
+      <fieldset id="camera-controls" class="control-group"><legend>Câmera</legend><button id="toggle-camera" aria-keyshortcuts="c" title="Câmera (C)" class="camera-toggle" aria-pressed="false">Ativar câmera</button></fieldset>
+        </div>
+      </details>
+      <details class="panel-section" open>
+        <summary>Predefinições<span class="section-chevron" aria-hidden="true">⌄</span></summary>
+        <div class="section-content">
+      <fieldset class="control-group preset-group">
+        <form id="preset-form"><label class="sr-only" for="preset-name">Nome da predefinição</label><input id="preset-name" placeholder="Nome (opcional)" maxlength="40" autocomplete="off"><button type="submit">Salvar</button></form>
+        <div class="modes preset-view-switch" role="group" aria-label="Visualização das predefinições"><button id="presets-summary" aria-pressed="false">Resumo</button><button id="presets-visual" aria-pressed="true">Visual</button></div>
+        <ul id="presets" aria-label="Predefinições salvas"></ul>
+      </fieldset>
+        </div>
+      </details>
+      <details class="shortcuts"><summary>Atalhos</summary><dl><div><dt><kbd>F</kbd></dt><dd>Tela cheia</dd></div><div><dt><kbd>P</kbd></dt><dd>Mostrar / ocultar painel</dd></div><div><dt><kbd>C</kbd></dt><dd>Ativar / desligar câmera</dd></div><div><dt><kbd>G</kbd></dt><dd>Cor única / gradiente</dd></div><div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Anel / inteira / laterais</dd></div><div><dt><kbd>+</kbd> <kbd>−</kbd></dt><dd>Ajustar intensidade</dd></div></dl></details>
+      <p id="status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+  <script src="shapes.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="ui.js" defer></script>
+</body>
+</html>
