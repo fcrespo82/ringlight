@@ -31,7 +31,7 @@ describe('interface shadcn + audiocn',()=>{
     await user.clear(second);await user.type(second,'#112233{Enter}');
     await waitFor(()=>{const h=JSON.parse(localStorage.getItem(STORAGE_KEY)!).recentColors;expect(h.colorEnd).toEqual(['#112233']);expect(h.color).toEqual([])});
   });
-  it('keeps camera stream active through full light and restores its preview',async()=>{
+  it('keeps camera stream active and visible through full light and other modes',async()=>{
     const user=userEvent.setup(), stop=vi.fn(), request=vi.fn().mockResolvedValue({getTracks:()=>[{stop}],getVideoTracks:()=>[{addEventListener:vi.fn()}]});
     Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:request}});
     vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue();
@@ -39,7 +39,10 @@ describe('interface shadcn + audiocn',()=>{
     await waitFor(()=>expect(container.querySelector('video')!.className).not.toContain('invisible'));
     await user.click(screen.getByRole('button',{name:'Configurações'}));expect(stop).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button',{name:'Configurações'}));
-    await user.click(screen.getByText('Luz inteira'));await user.click(screen.getByText('Laterais'));
+    await user.click(screen.getByText('Luz inteira'));
+    expect(container.querySelector('.light-stage.full .camera-frame')!.className).not.toContain('camera-off');
+    expect((screen.getByRole('switch',{name:/Câmera/}) as HTMLButtonElement).getAttribute('aria-checked')).toBe('true');
+    await user.click(screen.getByText('Laterais'));
     expect(request).toHaveBeenCalledTimes(1);expect(stop).not.toHaveBeenCalled();
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).settings.cameraEnabled).toBe(true);
   });
@@ -92,6 +95,20 @@ describe('interface shadcn + audiocn',()=>{
     expect(state.settings.intensity).toBe(40);expect(state.settings.sideWidth).toBe(10);
     expect(state.settings.color).not.toBe(state.settings.colorEnd);expect(state.presets).toEqual([]);
     expect(state.recentColors.color).toEqual([state.settings.color]);expect(state.recentColors.colorEnd).toEqual([state.settings.colorEnd]);
+  });
+  it('can activate and stop camera in full light and saves its preview in presets',async()=>{
+    const user=userEvent.setup(),stop=vi.fn(),request=vi.fn().mockResolvedValue({getTracks:()=>[{stop}],getVideoTracks:()=>[{addEventListener:vi.fn()}]});
+    Object.defineProperty(navigator,'mediaDevices',{configurable:true,value:{getUserMedia:request}});
+    vi.spyOn(HTMLMediaElement.prototype,'play').mockResolvedValue();
+    const {container}=render(<App/>);await user.click(screen.getByText('Luz inteira'));
+    expect(container.querySelector('.light-stage.full .camera-frame')!.className).toContain('camera-off');
+    await user.click(screen.getByRole('switch',{name:/Câmera/}));
+    await waitFor(()=>expect(container.querySelector('.light-stage.full .camera-frame')!.className).not.toContain('camera-off'));
+    await user.click(screen.getByRole('button',{name:'Salvar'}));
+    const state=JSON.parse(localStorage.getItem(STORAGE_KEY)!);expect(state.presets[0].mode).toBe('full');expect(state.presets[0].cameraEnabled).toBe(true);
+    expect(container.querySelector('.light-stage.mini.full .mini-camera')).not.toBeNull();
+    await user.click(screen.getByRole('switch',{name:/Câmera/}));expect(stop).toHaveBeenCalledTimes(1);
+    expect(container.querySelector('.light-stage.full .camera-frame')!.className).toContain('camera-off');
   });
   it('sanitizes SVG geometry, strips event attributes and rejects active content',()=>{
     const safe=sanitizeShapeSvg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 0 L100 0 L50 100Z" onclick="alert(1)"/></svg>');

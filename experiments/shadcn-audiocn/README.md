@@ -26,7 +26,7 @@ O modo offline e a instalação PWA estão disponíveis no build de produção. 
 - shadcn: botões, cartões, seletores, switches, inputs, tooltips, alertas e painel recolhível.
 - audiocn: knobs para intensidade, espessura/largura e direção do gradiente, ao lado dos valores digitáveis, sem sliders duplicados. Arraste ou use as setas; Shift permite ajuste fino e duplo clique restaura o padrão.
 - Anel com formas e SVG personalizado, tela inteira e faixas laterais; gradiente forte com históricos de cores independentes.
-- Câmera preservada entre modos, predefinições com miniaturas em duas colunas e nomes automáticos.
+- Câmera preservada entre modos, com prévia pequena central no modo luz inteira e controle disponível nos três modos, predefinições com miniaturas em duas colunas e nomes automáticos.
 - Painel arrastável pelo cabeçalho, minimizado no mesmo componente sem fade; valores digitáveis, unidades fora do input e rótulos que restauram os padrões.
 - Atalhos: F tela cheia, P painel, C câmera, G gradiente, 1/2/3 modos e +/− intensidade.
 
