@@ -47,3 +47,5 @@ Repositório: https://github.com/fcrespo82/ringlight. Somente esta versão é pu
 Para atualizar, autentique a CLI do GitHub com `gh auth login`, execute `npm test` e `npm run deploy` nesta pasta. O comando gera o build, envia os arquivos para `gh-pages`, mantém o domínio configurado e ativa o HTTPS quando o certificado do GitHub está disponível. Ele requer Node 24 e a CLI `gh`; não grava credenciais no projeto. As alterações do código-fonte devem ser commitadas e enviadas para `main` separadamente.
 
 Na Cloudflare, use um registro **CNAME**, nome **ringlight**, destino **fcrespo82.github.io**, com proxy desativado (DNS only). Ative **Enforce HTTPS** no Pages após a emissão do certificado. O domínio personalizado precisa estar configurado no Pages; o arquivo CNAME sozinho não faz isso.
+
+Em **Luz inteira**, ajuste **Tamanho da câmera** de 10 a 80% do menor lado da tela, com largura padrão de 32% e proporção 4:3. O ajuste é salvo automaticamente e nas predefinições, aparece nas miniaturas e permanece ao trocar de modo. Clique no rótulo ou dê duplo clique no valor para restaurar 32%.

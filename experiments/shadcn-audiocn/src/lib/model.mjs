@@ -1,6 +1,6 @@
 import { SHAPES, sanitizeShapeSvg } from './shapes.js'
 export const STORAGE_KEY = 'ringlight.lab.v1'
-export const defaults = { mode:'ring', shape:'circle', customSvg:'', color:'#ffffff', colorEnd:'#00cfff', colorMode:'solid', gradientAngle:90, intensity:100, ringThickness:29, sideWidth:20, cameraEnabled:false }
+export const defaults = { mode:'ring', shape:'circle', customSvg:'', color:'#ffffff', colorEnd:'#00cfff', colorMode:'solid', gradientAngle:90, intensity:100, ringThickness:29, sideWidth:20, cameraEnabled:false, cameraSize:32 }
 export const suggested = [['#ffffff','Branco'],['#fff4e5','Neutro'],['#ffe0ac','Quente médio'],['#d2e8ff','Frio'],['#ff007f','Rosa'],['#00cfff','Ciano'],['#c8bcff','Lilás'],['#ffc078','Âmbar']]
 const hex = (v) => typeof v === 'string' && /^#[0-9a-f]{6}$/i.test(v)
 const number = (v, min, max, fallback) => Number.isFinite(v) && v >= min && v <= max ? v : fallback
@@ -11,7 +11,7 @@ export function normalizeSettings(value = {}) {
   return { mode:['ring','full','sides'].includes(v.mode)?v.mode:'ring', shape, customSvg,
     color:hex(v.color)?v.color.toLowerCase():defaults.color, colorEnd:hex(v.colorEnd)?v.colorEnd.toLowerCase():defaults.colorEnd,
     colorMode:v.colorMode==='gradient'?'gradient':'solid', gradientAngle:number(v.gradientAngle,0,360,90), intensity:number(v.intensity,0,100,100),
-    ringThickness:number(v.ringThickness,5,70,29),sideWidth:number(v.sideWidth,5,40,20),cameraEnabled:v.cameraEnabled===true }
+    ringThickness:number(v.ringThickness,5,70,29),sideWidth:number(v.sideWidth,5,40,20),cameraEnabled:v.cameraEnabled===true,cameraSize:number(v.cameraSize,10,80,32) }
 }
 export function normalizeHistory(values) { return Array.isArray(values) ? [...new Set(values.filter(hex).map(v=>v.toLowerCase()))].slice(0,8) : [] }
 export function normalizeSaved(value) {

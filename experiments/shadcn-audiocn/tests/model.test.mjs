@@ -18,3 +18,10 @@ test('invalid saved values fall back and gradient intensity dims both colors',()
  assert.equal(normalizeSettings({intensity:999}).intensity,100)
  assert.equal(lightBackground({...defaults,color:'#ff0000',colorEnd:'#0000ff',colorMode:'gradient',intensity:50}), 'linear-gradient(90deg, rgb(128,0,0) 40%, rgb(0,0,128) 60%)')
 })
+
+test('full-light camera size is validated and preserved in saved settings and presets',()=>{
+ assert.equal(normalizeSettings({cameraSize:999}).cameraSize,32)
+ assert.equal(normalizeSettings({}).cameraSize,32)
+ const s=normalizeSettings({...defaults,mode:'full',cameraEnabled:true,cameraSize:65}),p=createPreset(s,'Câmera',[])
+ const restored=normalizeSaved({settings:s,presets:[p]});assert.equal(restored.settings.cameraSize,65);assert.equal(restored.presets[0].cameraSize,65)
+})

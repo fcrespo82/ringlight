@@ -110,6 +110,19 @@ describe('interface shadcn + audiocn',()=>{
     await user.click(screen.getByRole('switch',{name:/Câmera/}));expect(stop).toHaveBeenCalledTimes(1);
     expect(container.querySelector('.light-stage.full .camera-frame')!.className).toContain('camera-off');
   });
+  it('edits full-light camera size, preserves it across modes and renders it in presets',async()=>{
+    const user=userEvent.setup(),{container}=render(<App/>);await user.click(screen.getByText('Luz inteira'));
+    const size=screen.getByRole('textbox',{name:'Tamanho da câmera'});await user.clear(size);await user.type(size,'65{Enter}');
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).settings.cameraSize).toBe(65);
+    expect((container.querySelector('.light-stage.full') as HTMLElement).style.getPropertyValue('--full-camera-width')).toBe('min(65vw,65dvh)');
+    await user.click(screen.getByText('Anel'));await user.click(screen.getByText('Luz inteira'));
+    expect((screen.getByRole('textbox',{name:'Tamanho da câmera'}) as HTMLInputElement).value).toBe('65');
+    await user.click(screen.getByRole('button',{name:'Salvar'}));
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).presets[0].cameraSize).toBe(65);
+    expect((container.querySelector('.light-stage.mini.full') as HTMLElement).style.getPropertyValue('--mini-full-camera-width')).toBe('65%');
+    await user.click(screen.getByRole('button',{name:'Tamanho da câmera'}));
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).settings.cameraSize).toBe(32);
+  });
   it('sanitizes SVG geometry, strips event attributes and rejects active content',()=>{
     const safe=sanitizeShapeSvg('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0 0 L100 0 L50 100Z" onclick="alert(1)"/></svg>');
     expect(safe).toContain('path');expect(safe).not.toContain('onclick');

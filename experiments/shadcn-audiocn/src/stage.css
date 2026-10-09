@@ -4,9 +4,9 @@
 .light-stage.full{background:var(--light)}.light-stage.full::before{display:none}
 .light-stage.sides::before{width:100%;height:100%;mask-image:linear-gradient(to right,#000 var(--side-width),transparent var(--side-width),transparent var(--side-start),#000 var(--side-start));-webkit-mask-image:linear-gradient(to right,#000 var(--side-width),transparent var(--side-width),transparent var(--side-start),#000 var(--side-start))}
 .camera-frame{position:relative;display:grid;place-items:center;width:var(--center-size);height:var(--center-size);background:#000;mask:var(--center-mask) 0 0/100% 100%;-webkit-mask:var(--center-mask) 0 0/100% 100%;overflow:hidden}
-.camera-frame video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}.light-stage.full .camera-frame{width:min(32vw,38dvh,240px);height:auto;aspect-ratio:4/3;border-radius:12px;mask:none;-webkit-mask:none}
+.camera-frame video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}.light-stage.full .camera-frame{width:var(--full-camera-width);height:var(--full-camera-height);aspect-ratio:4/3;border-radius:12px;mask:none;-webkit-mask:none}
 .light-stage.full .camera-frame.camera-off{display:none}
-.light-stage.mini.full .camera-frame{width:32%;height:24%;aspect-ratio:auto;border-radius:4px}.light-stage.sides .camera-frame{width:var(--side-center);height:min(80dvh,var(--side-center));mask:none;-webkit-mask:none}
+.light-stage.mini.full .camera-frame{width:var(--mini-full-camera-width);height:var(--mini-full-camera-height);aspect-ratio:auto;border-radius:4px}.light-stage.sides .camera-frame{width:var(--side-center);height:min(80dvh,var(--side-center));mask:none;-webkit-mask:none}
 .light-stage.mini{position:absolute;inset:0}.mini::before{width:100%;height:100%}.mini .camera-frame{width:var(--inner-percent);height:var(--inner-percent);background:#252b35}.mini.sides .camera-frame{width:var(--side-percent);height:70%}.mini-camera{width:20px;height:20px;color:#bbff80}
 .lab-window{position:fixed;z-index:10;top:20px;right:20px;width:380px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 24px);overflow:hidden;box-shadow:0 16px 64px #0009;transition:width 240ms cubic-bezier(.4,0,.2,1)}.lab-window.collapsed{width:190px}
 
